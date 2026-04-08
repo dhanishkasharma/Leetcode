@@ -4,21 +4,17 @@ public:
 
         if(s.length()!=t.length()) return false;
 
-        unordered_map<char,int> mpp;
-         int cnt=0;
+        vector<int> freq(26,0);
 
         for(int i=0;i<s.size();i++){
-            mpp[s[i]]++;
-            cnt++;
-        }
+            freq[s[i]-'a']++;
+            freq[t[i]-'a']--;
+        }    
 
-        for(int i=0;i<t.size();i++){
-                  if(mpp[t[i]] > 0){   
-                mpp[t[i]]--;   
-                cnt--;
-            }
+        for(int x:freq){
+            if(x!=0) return false;
+        }    
 
-        }
-        return cnt==0;
+        return true;
     }
 };
