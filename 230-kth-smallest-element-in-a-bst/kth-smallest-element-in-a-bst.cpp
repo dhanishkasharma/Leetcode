@@ -12,36 +12,25 @@
 class Solution {
 public:
 
-  void checker(TreeNode* root,vector<int>& ans){
+   void checker(TreeNode* root,int k,int &ans,int &cnt){
+    if(root==nullptr) return;
 
-        if(root==nullptr) return ;
+    checker(root->left,k,ans,cnt);
+    cnt++;
 
-        ans.push_back(root->val);
-
-
-        if(root->left)  checker(root->left,ans);
-        if(root->right)   checker(root->right,ans);
-
-        
-
-      
-
-         
-
+    if(cnt==k){
+        ans=root->val;
+        return ;
     }
+
+    checker(root->right,k,ans,cnt);
+   }
     int kthSmallest(TreeNode* root, int k) {
 
-        vector<int> ans;
+        int cnt=0;
+        int ans;
 
-
-     checker(root,ans);
-
-      sort(ans.begin(),ans.end());
-
-
-
-
-   return ans[k-1];
-        
+        checker(root,k,ans,cnt);
+        return ans;
     }
 };
