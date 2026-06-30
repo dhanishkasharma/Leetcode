@@ -3,39 +3,56 @@ public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
 
         vector<vector<int>> adj(numCourses);
-        vector<int> in(numCourses, 0);
+        
 
-        // Build graph
-        for (auto &p : prerequisites) {
-            adj[p[1]].push_back(p[0]);
-            in[p[0]]++;
+    
+            for(auto it:prerequisites){
+                int u=it[1];
+                int v=it[0];
+
+                adj[u].push_back(v);
+            }
+        
+
+
+        vector<int> indeg(numCourses,0);
+
+        for(int i=0;i<numCourses;i++){
+            for(auto it:adj[i]){
+                indeg[it]++;
+            }
         }
 
         queue<int> q;
-
-        // Push courses with indegree 0
-        for (int i = 0; i < numCourses; i++) {
-            if (in[i] == 0) {
+        vector<int> ans;
+        for(int i=0;i<numCourses;i++){
+            if(indeg[i]==0) {
                 q.push(i);
+                ans.push_back(i);
             }
         }
 
-        int count = 0;
+        
 
-        // BFS
-        while (!q.empty()) {
-            int node = q.front();
+
+
+        while(!q.empty()){
+            int node=q.front();
             q.pop();
-            count++;
 
-            for (int next : adj[node]) {
-                in[next]--;
-                if (in[next] == 0) {
-                    q.push(next);
+            for(auto it:adj[node]){
+                indeg[it]--;
+
+                if(indeg[it]==0){
+                    q.push(it);
+                    ans.push_back(it);
                 }
             }
+
+
         }
 
-        return count == numCourses;
+
+        return ans.size()==numCourses;
     }
 };
